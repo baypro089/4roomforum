@@ -22,6 +22,12 @@ builder.WebHost.UseUrls("http://*:5001");
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDBContext>();
+    dbContext.Database.Migrate();
+}
+
 // Cấu hình middleware
 if (app.Environment.IsDevelopment())
 {

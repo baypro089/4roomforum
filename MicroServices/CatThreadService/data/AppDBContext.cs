@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MicroServices.CatThreadService;
-using Pomelo.EntityFrameworkCore;
+
 namespace MicroServices.CatThreadService.Data
 {
     public class AppDBContext : DbContext
@@ -11,5 +10,14 @@ namespace MicroServices.CatThreadService.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Threads> Threads { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Threads>()
+                .HasOne(thread => thread.Category)
+                .WithMany(category => category.Threads)
+                .HasForeignKey(thread => thread.CategoryID)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

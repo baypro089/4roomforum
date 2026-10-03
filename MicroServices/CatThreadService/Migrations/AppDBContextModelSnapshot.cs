@@ -26,66 +26,98 @@ namespace CatThreadService.Migrations
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("category_id");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CategoryId"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("category_name");
 
                     b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("created_by");
 
                     b.Property<DateOnly>("CreatedDate")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("created_date");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("description");
 
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Thread", b =>
+            modelBuilder.Entity("Threads", b =>
                 {
                     b.Property<int>("ThreadId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("thread_id");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ThreadId"));
 
                     b.Property<int>("CategoryID")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("category_id");
 
                     b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("created_by");
 
                     b.Property<DateOnly>("CreatedDate")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("created_date");
 
                     b.Property<int>("IsClosed")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("is_closed");
 
                     b.Property<int>("IsPinned")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("is_pinned");
 
                     b.Property<string>("ThreadContent")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("thread_content");
 
                     b.Property<string>("ThreadTitle")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("thread_title");
 
                     b.Property<int>("ViewCount")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("view_count");
 
                     b.HasKey("ThreadId");
 
+                    b.HasIndex("CategoryID");
+
                     b.ToTable("Threads");
+                });
+
+            modelBuilder.Entity("Threads", b =>
+                {
+                    b.HasOne("Category", "Category")
+                        .WithMany("Threads")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Category", b =>
+                {
+                    b.Navigation("Threads");
                 });
 #pragma warning restore 612, 618
         }

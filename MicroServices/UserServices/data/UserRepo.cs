@@ -20,6 +20,8 @@ public class UserRepo : IUserRepo
             throw new ArgumentNullException(nameof(user));
 
         }
+
+        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
         _context.Users.Add(user);
         _context.SaveChanges();
     }
@@ -51,6 +53,17 @@ public class UserRepo : IUserRepo
 
     public void UpdateUser(User user)
     {
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
+        if (!string.IsNullOrWhiteSpace(user.Password) &&
+            !user.Password.StartsWith("$2"))
+        {
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        }
+
         _context.Users.Update(user);
         _context.SaveChanges();
     }

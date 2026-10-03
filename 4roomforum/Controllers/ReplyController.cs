@@ -134,32 +134,45 @@ namespace _4roomforum.Controllers
         {
             try
             {
-
-                    //bool success = await _replyService.CreateReply(createReplyDTO);
-                    int? replyId = await _replyService.CreateReply1(createReplyDTO);
-
-                  
-                    if (replyId != null)
-                    {
-                        if (replyId.HasValue)
-                        {
-                            await _commentSocket.Clients.All.SendAsync("ReceiveComment", createReplyDTO.PostId, createReplyDTO.ReplyContent, User.Identity.Name, createReplyDTO.ReplyToReply, replyId);
-                            TempData["Message"] = "Reply created successfully!";
-                            return RedirectToAction("Index", new { PostId = createReplyDTO.PostId });
-                        }
-                        
-    
-                        // Optionally, you can show a success message or redirect to another page
-                        TempData["Message"] = "Error!";
-                        return RedirectToAction("Index", new { PostId = createReplyDTO.PostId });
-
-                }
-                else
+                var currentUserId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+                if (!int.TryParse(currentUserId, out var parsedUserId))
                 {
-                    // If reply creation fails, show an error message
-                    TempData["Message"] = "Reply delete failed.";
+                    return Unauthorized();
+                }
+
+                createReplyDTO.RepliedBy = parsedUserId;
+                int? replyId = await _replyService.CreateReply1(createReplyDTO);
+                if (replyId.HasValue)
+                {
+                    var user = await _userService.GetUserById(createReplyDTO.RepliedBy);
+                    var parentReply = createReplyDTO.ReplyToReply.HasValue
+                        ? await _replyService.GetAReply(createReplyDTO.ReplyToReply.Value)
+                        : null;
+                    var parentUser = parentReply == null
+                        ? null
+                        : await _userService.GetUserById(parentReply.RepliedBy);
+
+                    await _commentSocket.Clients
+                        .Group(CommentSocket.GetGroupName(createReplyDTO.PostId))
+                        .SendAsync("ReceiveComment", new
+                        {
+                            replyId = replyId.Value,
+                            postId = createReplyDTO.PostId,
+                            replyContent = createReplyDTO.ReplyContent,
+                            userName = user?.UserName ?? User.Identity?.Name ?? "User",
+                            avatar = user?.Avatar,
+                            replyToReply = createReplyDTO.ReplyToReply,
+                            replyToContent = parentReply?.ReplyContent,
+                            replyToUserName = parentUser?.UserName,
+                            replyDate = DateTime.UtcNow
+                        });
+
+                    TempData["Message"] = "Reply created successfully!";
                     return RedirectToAction("Index", new { PostId = createReplyDTO.PostId });
                 }
+
+                TempData["Message"] = "Reply creation failed.";
+                return RedirectToAction("Index", new { PostId = createReplyDTO.PostId });
             }
             catch (Exception ex)
             {
@@ -234,14 +247,15 @@ namespace _4roomforum.Controllers
         {
             try
             {
-                //These codes is temporary, you can replace it when socket codes are available!!!
                 var Reply = (ReplyDTO)await _replyService.GetAReply(id);
                 var Post = (PostDTO)await _postService.GetPostById(Reply.PostId);
 
                 bool success = await _replyService.DeleteReply(id);
                 if (success)
                 {
-                    // Optionally, you can show a success message or redirect to another page
+                    await _commentSocket.Clients
+                        .Group(CommentSocket.GetGroupName(Post.Id))
+                        .SendAsync("ReplyDeleted", id);
                     TempData["Message"] = "Reply delete successfully!";
                     return RedirectToAction("Index", new { PostId = Post.Id });
                 }
@@ -263,10 +277,19 @@ namespace _4roomforum.Controllers
         {
             try
             {
+                var reply = await _replyService.GetAReply(id);
                 bool check = await _replyService.UpdateReply(id, updateReplyDTO);
                 if (!check) {
                     return Json(new { success = false, message = "Invalid data." });
                 }
+                await _commentSocket.Clients
+                    .Group(CommentSocket.GetGroupName(reply.PostId))
+                    .SendAsync("ReplyUpdated", new
+                    {
+                        replyId = id,
+                        replyContent = updateReplyDTO.ReplyContent,
+                        replyDate = updateReplyDTO.ReplyDate
+                    });
                 return Json(new { success = true, message = "Reply updated successfully."
                     , updatedContent = updateReplyDTO.ReplyContent, isEdited = true
                 });

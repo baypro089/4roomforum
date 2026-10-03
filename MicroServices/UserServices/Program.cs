@@ -21,6 +21,12 @@ builder.Services.AddScoped<IUserRepo, UserRepo>(); // Đăng ký CategoryRepo
 builder.Services.AddScoped<IRoleRepo, RoleRepo>();
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDBContext>();
+    dbContext.Database.Migrate();
+}
+
 // Cấu hình middleware
 if (app.Environment.IsDevelopment())
 {

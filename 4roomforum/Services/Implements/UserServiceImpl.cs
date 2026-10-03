@@ -8,11 +8,17 @@ namespace _4roomforum.Services.Implements
         private readonly ILogger<UserServiceImpl> _logger;
         private readonly HttpClient _client;
 
-        public UserServiceImpl(HttpClient httpClient, ILogger<UserServiceImpl> logger)
+        public UserServiceImpl(
+            HttpClient httpClient,
+            ILogger<UserServiceImpl> logger,
+            IConfiguration configuration)
         {
             _logger = logger;
             _client = httpClient;
-            _client.BaseAddress = new Uri("http://localhost:5002/");
+            _client.BaseAddress = new Uri(
+                configuration["ServiceUrls:UserService"]
+                ?? throw new InvalidOperationException(
+                    "ServiceUrls:UserService chưa được cấu hình."));
         }
 
         public async Task<IEnumerable<UserDTO>> GetAllUsers() {

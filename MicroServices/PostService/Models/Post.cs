@@ -26,10 +26,10 @@ namespace PostService.Models
         public bool IsCreatedByAdmin { get; set; }
 
         [InverseProperty("Post")]
-        public ICollection<Reply>? Replies { get; set; }
+        public ICollection<Reply> Replies { get; set; } = new List<Reply>();
 
         [InverseProperty("Post")]
-        public ICollection<LikeOfPost>? Likes { get; set; }
+        public ICollection<LikeOfPost> Likes { get; set; } = new List<LikeOfPost>();
 
 
     }

@@ -10,11 +10,17 @@ namespace _4roomforum.Services.Implements
         private readonly ILogger<ThreadServiceImpl> _logger;
         private readonly HttpClient _client;
 
-        public ThreadServiceImpl(HttpClient httpClient, ILogger<ThreadServiceImpl> logger)
+        public ThreadServiceImpl(
+            HttpClient httpClient,
+            ILogger<ThreadServiceImpl> logger,
+            IConfiguration configuration)
         {
             _logger = logger;
             _client = httpClient;
-            _client.BaseAddress = new Uri("http://localhost:5001/");
+            _client.BaseAddress = new Uri(
+                configuration["ServiceUrls:CatThreadService"]
+                ?? throw new InvalidOperationException(
+                    "ServiceUrls:CatThreadService chưa được cấu hình."));
         }
 
         public async Task<IEnumerable<ThreadDTO>> GetAllThreads()

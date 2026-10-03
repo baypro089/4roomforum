@@ -10,7 +10,7 @@ namespace PostService.Data
         {
         }
 
-        public DbSet<Post> Posts{ get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Reply> Replies { get; set; }
         public DbSet<LikeOfPost> LikeOfPosts { get; set; }
         public DbSet<LikeOfReply> LikeOfReplies { get; set; }
@@ -27,6 +27,18 @@ namespace PostService.Data
                 .HasOne(r => r.ReplyToReply2)
                 .WithMany(r2 => r2.ReplyToReplies)
                 .HasForeignKey(r => r.ReplyToReply)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<LikeOfPost>()
+                .HasOne(like => like.Post)
+                .WithMany(post => post.Likes)
+                .HasForeignKey(like => like.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<LikeOfReply>()
+                .HasOne(like => like.Reply)
+                .WithMany(reply => reply.Likes)
+                .HasForeignKey(like => like.ReplyId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -14,6 +14,10 @@ builder.Services.AddScoped<IUserService, UserServiceImpl>();
 builder.Services.AddScoped<IPostService, PostServiceImpl>();
 builder.Services.AddScoped<IReplyService, ReplyServiceImpl>();
 builder.Services.AddHttpClient<CategoryServiceImpl>();
+builder.Services.AddHttpClient<UserServiceImpl>();
+builder.Services.AddHttpClient<ThreadServiceImpl>();
+builder.Services.AddHttpClient<PostServiceImpl>();
+builder.Services.AddHttpClient<ReplyServiceImpl>();
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 

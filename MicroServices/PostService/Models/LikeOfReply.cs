@@ -10,7 +10,7 @@ namespace PostService.Models
         public int Id { get; set; }
 
         [Column("vote")]
-        public int vote { get; set; }
+        public int Vote { get; set; } = 1;
 
         [Column("reply_id"), ForeignKey("Reply")]
         public required int ReplyId { get; set; }

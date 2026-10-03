@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using MicroServices.UserServices;
-using Pomelo.EntityFrameworkCore;
+
 namespace MicroServices.UserServices.Data
-// namespace UserServices.data
 {
     public class AppDBContext : DbContext
     {
@@ -12,5 +10,14 @@ namespace MicroServices.UserServices.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasOne(user => user.Role)
+                .WithMany(role => role.Users)
+                .HasForeignKey(user => user.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }

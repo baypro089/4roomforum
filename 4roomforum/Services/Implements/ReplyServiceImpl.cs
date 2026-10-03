@@ -10,11 +10,17 @@ namespace _4roomforum.Services.Implements
         private readonly HttpClient _client;
         private readonly ILogger<ReplyServiceImpl> _logger;
 
-        public ReplyServiceImpl(HttpClient httpClient, ILogger<ReplyServiceImpl> logger)
+        public ReplyServiceImpl(
+            HttpClient httpClient,
+            ILogger<ReplyServiceImpl> logger,
+            IConfiguration configuration)
         {
             _client = httpClient;
             _logger = logger;
-            _client.BaseAddress = new Uri("http://localhost:5003/");
+            _client.BaseAddress = new Uri(
+                configuration["ServiceUrls:PostService"]
+                ?? throw new InvalidOperationException(
+                    "ServiceUrls:PostService chưa được cấu hình."));
         }
 
         public async Task<PagedResult<ReplyDTO>> GetAllReplies(int PostId, int pageNumber = 1, int pageSize = 5)

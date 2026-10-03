@@ -5,6 +5,9 @@
 /MicroServices/UserServices/obj
 /MicroServices/CatThreadService/obj
 *.user
+.env
+.env.*
+!.env.example
 
 **/bin/
 **/obj/

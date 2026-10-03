@@ -16,7 +16,7 @@ namespace PostService.Models
         public int RepliedBy { get; set; }
 
         [Column("reply_content")]  // Tên cột là "reply_content"
-        public string ReplyContent { get; set; }
+        public string ReplyContent { get; set; } = string.Empty;
 
         [Column("reply_date")]  // Tên cột là "reply_date"
         public DateTime ReplyDate { get; set; } = DateTime.UtcNow;
@@ -40,9 +40,9 @@ namespace PostService.Models
         public Reply? ReplyToReply2 { get; set; }
 
         [InverseProperty("ReplyToReply2")]
-        public ICollection<Reply>? ReplyToReplies { get; set; }
+        public ICollection<Reply> ReplyToReplies { get; set; } = new List<Reply>();
 
         [InverseProperty("Reply")]
-        public ICollection<LikeOfReply>? Likes { get; set; }
+        public ICollection<LikeOfReply> Likes { get; set; } = new List<LikeOfReply>();
     }
 }

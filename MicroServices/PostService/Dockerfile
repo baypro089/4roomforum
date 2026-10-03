@@ -21,7 +21,7 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 
-EXPOSE 5002
+EXPOSE 5003
 
 # Entry point to run the application
 ENTRYPOINT ["dotnet", "PostService.dll"]

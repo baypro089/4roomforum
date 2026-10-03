@@ -12,8 +12,8 @@ using PostService.Data;
 namespace PostService.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20241207043759_addAttribute")]
-    partial class addAttribute
+    [Migration("20261002135931_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

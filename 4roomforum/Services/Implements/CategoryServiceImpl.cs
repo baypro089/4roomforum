@@ -9,11 +9,17 @@ namespace _4roomforum.Services.Implements
     {
         private readonly ILogger<CategoryServiceImpl> _logger;
         private readonly HttpClient _client;
-        public CategoryServiceImpl(HttpClient httpClient, ILogger<CategoryServiceImpl> logger)
+        public CategoryServiceImpl(
+            HttpClient httpClient,
+            ILogger<CategoryServiceImpl> logger,
+            IConfiguration configuration)
         {
             _logger = logger;
             _client = httpClient;
-            _client.BaseAddress = new Uri("http://localhost:5001/");
+            _client.BaseAddress = new Uri(
+                configuration["ServiceUrls:CatThreadService"]
+                ?? throw new InvalidOperationException(
+                    "ServiceUrls:CatThreadService chưa được cấu hình."));
         }
         public async Task<IEnumerable<CategoryDTO>> GetAllCategory()
         {

@@ -42,9 +42,8 @@ CREATE TABLE IF NOT EXISTS `Users` (
   PRIMARY KEY (`UserId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table forum_user_role.Users: ~0 rows (approximately)
-REPLACE INTO `Users` (`UserId`, `UserName`, `Email`, `PassWord`, `Avatar`, `RoleId`, `JoinDate`, `LastLogin`, `Status`) VALUES
-	(1, 'adminkiet', 'kiet@gmail.com', 'admin', 'doraemon.png', 1, '2024-11-05', '2024-11-05', 1);
+-- Do not seed accounts or passwords here. Provision the first administrator through
+-- the application using a strong password, then assign the administrator role.
 
 -- Dumping structure for table forum_user_role.__EFMigrationsHistory
 CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (

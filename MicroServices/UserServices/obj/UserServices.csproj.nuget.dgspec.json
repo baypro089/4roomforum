@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\UserServices\\UserServices.csproj": {}
+    "/home/baypro089/Projects/4roomforum/MicroServices/UserServices/UserServices.csproj": {}
   },
   "projects": {
-    "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\UserServices\\UserServices.csproj": {
+    "/home/baypro089/Projects/4roomforum/MicroServices/UserServices/UserServices.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\UserServices\\UserServices.csproj",
+        "projectUniqueName": "/home/baypro089/Projects/4roomforum/MicroServices/UserServices/UserServices.csproj",
         "projectName": "UserServices",
-        "projectPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\UserServices\\UserServices.csproj",
-        "packagesPath": "C:\\Users\\KietDang\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\KietDang\\Documents\\CSharp\\CSharp_WEB_API\\4roomforum\\Microservices\\UserServices\\obj\\",
+        "projectPath": "/home/baypro089/Projects/4roomforum/MicroServices/UserServices/UserServices.csproj",
+        "packagesPath": "/home/baypro089/.nuget/packages/",
+        "outputPath": "/home/baypro089/Projects/4roomforum/MicroServices/UserServices/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\KietDang\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/baypro089/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -32,11 +32,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -46,6 +41,10 @@
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
               "version": "[12.0.1, )"
+            },
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
@@ -103,7 +102,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.307/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.131/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

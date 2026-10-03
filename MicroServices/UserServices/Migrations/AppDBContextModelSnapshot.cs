@@ -26,13 +26,15 @@ namespace UserServices.Migrations
                 {
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("role_id");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("RoleId"));
 
                     b.Property<string>("RoleName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("role_name");
 
                     b.HasKey("RoleId");
 
@@ -43,41 +45,68 @@ namespace UserServices.Migrations
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("Avatar")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("avatar");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("email");
 
                     b.Property<DateOnly>("JoinDate")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("join_date");
 
                     b.Property<DateOnly>("LastLogin")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("last_login");
 
-                    b.Property<string>("PassWord")
+                    b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("password");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("role_id");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("status");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("user_name");
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("User", b =>
+                {
+                    b.HasOne("Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

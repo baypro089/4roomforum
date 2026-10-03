@@ -12,11 +12,17 @@ namespace _4roomforum.Services.Implements
         private readonly ILogger<PostServiceImpl> _logger;
         private readonly HttpClient _client;
 
-        public PostServiceImpl(HttpClient httpClient, ILogger<PostServiceImpl> logger)
+        public PostServiceImpl(
+            HttpClient httpClient,
+            ILogger<PostServiceImpl> logger,
+            IConfiguration configuration)
         {
             _logger = logger;
             _client = httpClient;
-            _client.BaseAddress = new Uri("http://localhost:5003/");
+            _client.BaseAddress = new Uri(
+                configuration["ServiceUrls:PostService"]
+                ?? throw new InvalidOperationException(
+                    "ServiceUrls:PostService chưa được cấu hình."));
         }
         public async Task<LikeResult> LikePost(int postId, int userId)
         {

@@ -1,16 +1,26 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Category
 {
     [Key]
-    [Required]
+    [Column("category_id")]
     public int CategoryId { get; set; }
+
     [Required]
-    public string CategoryName { get; set; }
-    public string Description { get; set; }
+    [Column("category_name")]
+    public string CategoryName { get; set; } = string.Empty;
+
+    [Column("description")]
+    public string Description { get; set; } = string.Empty;
+
+    [Column("created_by")]
     public int CreatedBy { get; set; }
-    public DateOnly CreatedDate { get; set; }
+
+    [Column("created_date")]
+    public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
+
+    public ICollection<Threads> Threads { get; set; } = new List<Threads>();
 
     public override string ToString()
     {

@@ -43,7 +43,7 @@ namespace PostService.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("LikeOfPosts");
+                    b.ToTable("LikeOfPosts", (string)null);
                 });
 
             modelBuilder.Entity("PostService.Models.LikeOfReply", b =>
@@ -71,7 +71,7 @@ namespace PostService.Migrations
 
                     b.HasIndex("ReplyId");
 
-                    b.ToTable("LikeOfReplies");
+                    b.ToTable("LikeOfReplies", (string)null);
                 });
 
             modelBuilder.Entity("PostService.Models.Post", b =>
@@ -119,7 +119,7 @@ namespace PostService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("PostService.Models.Reply", b =>
@@ -170,7 +170,7 @@ namespace PostService.Migrations
 
                     b.HasIndex("ReplyToReply");
 
-                    b.ToTable("Replies");
+                    b.ToTable("Replies", (string)null);
                 });
 
             modelBuilder.Entity("PostService.Models.LikeOfPost", b =>
